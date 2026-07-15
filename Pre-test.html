@@ -1,0 +1,543 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الاختبار القبلي | كوفاري هب</title>
+<style>
+:root{
+  --blue:#0b5aa7;
+  --blue-dark:#063f78;
+  --teal:#4fc0b1;
+  --ink:#1f2937;
+  --muted:#64748b;
+  --card:#ffffff;
+  --line:#dbe4ee;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:"Cairo","Tajawal","Segoe UI",Tahoma,Arial,sans-serif;
+  background:linear-gradient(180deg,#eef5fb 0%,#f8fbfd 100%);
+  color:var(--ink);
+  line-height:1.75;
+}
+.container{max-width:980px;margin:auto;padding:24px}
+.participant-code{
+  display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
+  margin-bottom:14px;padding:10px 16px;border:1px solid #b9d8ef;border-radius:14px;
+  background:#fff;color:var(--blue-dark);box-shadow:0 5px 16px rgba(15,23,42,.05)
+}
+.participant-code strong{font-size:1.15rem;letter-spacing:1px;direction:ltr}
+.hero{
+  background:linear-gradient(135deg,var(--blue-dark),var(--blue));
+  color:#fff;border-radius:24px;padding:28px 30px;
+  box-shadow:0 14px 40px rgba(11,90,167,.18);
+}
+.hero-top{
+  display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
+}
+.logo-box{
+  background:#fff;
+  border:1px solid rgba(255,255,255,.18);
+  padding:4px;border-radius:18px;overflow:hidden;
+}
+.logo-box img{width:230px;max-width:100%;height:auto;display:block}
+.brand{font-size:.95rem;opacity:.92}
+h1{margin:.35rem 0 .35rem;font-size:clamp(1.7rem,4vw,2.6rem);line-height:1.35}
+.hero p{margin:0;max-width:760px}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.badge{
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
+  border-radius:999px;padding:6px 12px;font-size:.9rem
+}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:20px;
+  margin-top:18px;padding:22px;box-shadow:0 8px 24px rgba(15,23,42,.05)
+}
+.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+label.block{display:block;font-weight:700;margin-bottom:6px}
+input[type=text], textarea{
+  width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;
+  font:inherit;background:#fff
+}
+textarea{min-height:110px;resize:vertical}
+.progress-wrap{margin-top:18px}
+.progress-row{display:flex;justify-content:space-between;font-size:.9rem;color:var(--muted)}
+.progress{height:10px;background:#e7eef5;border-radius:999px;overflow:hidden;margin-top:7px}
+.progress > div{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--blue));transition:.25s}
+.section-title{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.section-title span{
+  width:34px;height:34px;border-radius:10px;background:#e9f3fb;color:var(--blue);
+  display:grid;place-items:center;font-weight:800
+}
+.section-note{margin:0;color:var(--muted)}
+.question{padding:18px 0;border-bottom:1px dashed var(--line)}
+.question{display:none;min-height:280px}
+.question.active-question{display:block;animation:stepIn .22s ease-out}
+.quiz-section{display:none}
+.quiz-section.active-section{display:block}
+@keyframes stepIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+.question:last-child{border-bottom:0}
+.q-title{font-weight:800;margin-bottom:10px}
+.hint{font-size:.92rem;color:var(--muted);margin-top:-4px;margin-bottom:10px}
+.options{display:grid;gap:9px}
+.option{
+  display:flex;gap:10px;align-items:flex-start;padding:10px 12px;
+  border:1px solid var(--line);border-radius:12px;cursor:pointer;background:#fff;
+  transition:.15s
+}
+.option:hover{border-color:#9fc4e5;background:#f8fbfe}
+.option input{margin-top:7px;accent-color:var(--blue)}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.scale label{
+  text-align:center;border:1px solid var(--line);border-radius:12px;padding:10px 4px;cursor:pointer
+}
+.scale input{display:block;margin:auto auto 5px;accent-color:var(--teal)}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.wizard-nav{
+  position:sticky;bottom:10px;z-index:5;display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;gap:10px;margin-top:18px;padding:12px;border:1px solid var(--line);
+  border-radius:16px;background:rgba(255,255,255,.96);box-shadow:0 10px 30px rgba(15,23,42,.12)
+}
+.wizard-nav button{min-height:48px}
+.wizard-nav #nextBtn,.wizard-nav #submitBtn{justify-self:end}
+.step-counter{color:var(--muted);font-weight:700;white-space:nowrap;text-align:center}
+.success-message{
+  display:none;text-align:center;border-color:#9bd8c9;background:#f0fbf8
+}
+.success-message h2{color:var(--blue-dark);margin:.3rem 0}
+button{
+  border:0;border-radius:12px;padding:12px 20px;font:inherit;font-weight:800;cursor:pointer
+}
+button:disabled{opacity:.65;cursor:not-allowed}
+.primary{background:var(--blue);color:#fff}
+.secondary{background:#eaf2f9;color:var(--blue-dark)}
+.alert{
+  display:none;margin-top:14px;background:#fff7e6;border:1px solid #f0cf8a;color:#7a5514;
+  padding:12px 14px;border-radius:12px
+}
+.result{display:none}
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.summary-box{
+  border:1px solid var(--line);border-radius:14px;padding:16px;background:#fbfdff;text-align:center
+}
+.summary-box strong{display:block;font-size:1.6rem;color:var(--blue-dark)}
+.note{
+  background:#eef9f7;border-right:5px solid var(--teal);padding:14px;border-radius:12px;margin-top:16px
+}
+.footer{
+  text-align:center;color:var(--muted);font-size:.88rem;padding:22px
+}
+.footer strong{color:var(--blue-dark)}
+@media(max-width:720px){
+  .container{padding:12px}
+  .hero{padding:20px 18px;border-radius:18px}
+  .card{padding:17px;margin-top:12px}
+  .intro-grid,.summary-grid{grid-template-columns:1fr}
+  .scale{grid-template-columns:1fr}
+  .scale label{display:flex;gap:10px;align-items:center;text-align:right}
+  .scale input{display:inline-block;margin:0}
+  .hero-top{flex-direction:column;align-items:center;gap:14px;text-align:center}
+  .hero-top > div:first-child{width:100%}
+  .hero h1{margin:0 0 8px;font-size:1.85rem}
+  .hero p{font-size:.96rem;line-height:1.65}
+  .logo-box{width:160px;margin-inline:auto;border-radius:14px}
+  .logo-box img{width:100%}
+  .meta{justify-content:center;margin-top:14px}
+  .badge{width:100%;text-align:center;padding:7px 12px}
+  .option{padding:13px 12px;min-height:50px}
+  .option input{width:20px;height:20px;margin-top:3px;flex:0 0 auto}
+  .question{min-height:360px;padding-top:8px}
+  .wizard-nav{bottom:6px;grid-template-columns:1fr 1fr;padding:9px}
+  .step-counter{grid-column:1/-1;grid-row:1}
+  .wizard-nav #prevBtn{grid-column:1;grid-row:2;width:100%}
+  .wizard-nav #nextBtn,.wizard-nav #submitBtn{grid-column:2;grid-row:2;width:100%}
+}
+@media print{
+  body{background:white}
+  .hero,.card{box-shadow:none}
+  .actions,.progress-wrap{display:none!important}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="participant-code" role="status" aria-live="polite">
+    <span>رمز المشارك الخاص بك:</span>
+    <strong id="participantCode">جارٍ التوليد...</strong>
+  </div>
+  <header class="hero">
+    <div class="hero-top">
+      <div>
+        <h1>الاختبار القبلي</h1>
+        <p>ورشة توظيف الذكاء الاصطناعي في تصميم وتطوير المحتوى التعليمي</p>
+      </div>
+      <div class="logo-box">
+        <img src="assets/covarihub-logo.png" alt="شعار Covari Hub">
+      </div>
+    </div>
+    <div class="meta">
+      <span class="badge">المدة المتوقعة: 6–8 دقائق</span>
+    </div>
+  </header>
+
+  <section class="card">
+    <div class="section-title"><span>✓</span><h2>البيانات الأساسية</h2></div>
+    <p class="section-note">يرجى تعبئة البيانات التالية ثم الإجابة عن الأسئلة.</p>
+    <div class="intro-grid">
+      <div>
+        <label class="block" for="name">الاسم (اختياري)</label>
+        <input id="name" type="text" placeholder="اكتب اسمك">
+      </div>
+      <div>
+        <label class="block" for="specialty">التخصص أو القسم (اختياري)</label>
+        <input id="specialty" type="text" placeholder="مثال: التربية، الهندسة، الطب...">
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-row"><span>نسبة الإنجاز</span><span id="progressText">0%</span></div>
+      <div class="progress"><div id="progressBar"></div></div>
+    </div>
+  </section>
+
+  <form id="quiz">
+    <section class="card quiz-section">
+      <div class="section-title"><span>1</span><h2>الخبرة الحالية</h2></div>
+
+      <div class="question">
+        <div class="q-title">1. كم مرة استخدمت أدوات الذكاء الاصطناعي خلال الأشهر الثلاثة الماضية؟</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="q1" value="0"> لم أستخدمها.</label>
+          <label class="option"><input type="radio" name="q1" value="1"> مرة أو مرتين فقط.</label>
+          <label class="option"><input type="radio" name="q1" value="2"> عدة مرات متفرقة.</label>
+          <label class="option"><input type="radio" name="q1" value="3"> أستخدمها أسبوعيًا أو أكثر.</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-title">2. في أي نوع من المهام استخدمتها غالبًا؟</div>
+        <div class="hint">اختر الخيار الأقرب، حتى لو استخدمت أكثر من نوع.</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="q2" value="0"> لم أستخدمها بعد.</label>
+          <label class="option"><input type="radio" name="q2" value="1"> أسئلة عامة أو بحث أولي.</label>
+          <label class="option"><input type="radio" name="q2" value="2"> تلخيص أو إعادة صياغة نصوص.</label>
+          <label class="option"><input type="radio" name="q2" value="3"> إعداد مواد أو أنشطة أو ملفات تعليمية.</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-title">3. ما مدى ثقتك في استخدام الذكاء الاصطناعي لإنجاز مهمة أكاديمية؟</div>
+        <div class="scale">
+          <label><input type="radio" name="q3" value="0">1<br>منخفضة جدًا</label>
+          <label><input type="radio" name="q3" value="1">2<br>منخفضة</label>
+          <label><input type="radio" name="q3" value="2">3<br>متوسطة</label>
+          <label><input type="radio" name="q3" value="3">4<br>جيدة</label>
+          <label><input type="radio" name="q3" value="4">5<br>مرتفعة</label>
+        </div>
+      </div>
+    </section>
+
+    <section class="card quiz-section">
+      <div class="section-title"><span>2</span><h2>الممارسة الحالية</h2></div>
+
+      <div class="question">
+        <div class="q-title">4. عندما تحصل على نتيجة غير مناسبة، ماذا تفعل غالبًا؟</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="q4" value="0"> أتوقف عن استخدام الأداة.</label>
+          <label class="option"><input type="radio" name="q4" value="1"> أعيد كتابة الطلب بصيغة مختلفة دون خطة واضحة.</label>
+          <label class="option"><input type="radio" name="q4" value="2"> أوضح ما لم يعجبني وأطلب تعديلًا محددًا.</label>
+          <label class="option"><input type="radio" name="q4" value="3"> أقسم المهمة إلى خطوات وأراجع كل خطوة قبل المتابعة.</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-title">5. عند استخدام نتيجة مولّدة، ما الذي تراجعه عادةً؟</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="q5" value="0"> لا أراجعها غالبًا.</label>
+          <label class="option"><input type="radio" name="q5" value="1"> أراجع اللغة والشكل فقط.</label>
+          <label class="option"><input type="radio" name="q5" value="2"> أراجع صحة المعلومات وملاءمتها للمهمة.</label>
+          <label class="option"><input type="radio" name="q5" value="3"> أراجع الصحة والملاءمة والخصوصية وقابلية الاستخدام.</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-title">6. ما مدى قدرتك الحالية على الحصول على ملف أو منتج قابل للاستخدام من الأداة؟</div>
+        <div class="scale">
+          <label><input type="radio" name="q6" value="0">1<br>لا أستطيع</label>
+          <label><input type="radio" name="q6" value="1">2<br>بصعوبة</label>
+          <label><input type="radio" name="q6" value="2">3<br>أحيانًا</label>
+          <label><input type="radio" name="q6" value="3">4<br>غالبًا</label>
+          <label><input type="radio" name="q6" value="4">5<br>بثقة</label>
+        </div>
+      </div>
+    </section>
+
+    <section class="card quiz-section">
+      <div class="section-title"><span>3</span><h2>تقدير مواقف عامة</h2></div>
+
+      <div class="question">
+        <div class="q-title">7. كُلّفت بإعداد مادة تعليمية لمجموعة جديدة من الطلاب. ما أول معلومة تحتاجها قبل البدء؟</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="q7" value="0"> عدد الصفحات المطلوبة فقط.</label>
+          <label class="option"><input type="radio" name="q7" value="1"> خصائص الطلاب وما المطلوب أن يحققوه.</label>
+          <label class="option"><input type="radio" name="q7" value="0"> نوع الخط والألوان.</label>
+          <label class="option"><input type="radio" name="q7" value="0"> اسم الأداة التي سأستخدمها.</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-title">8. ظهرت لك إجابة مقنعة، لكنك غير متأكد من صحتها. ما التصرف الأقرب لما تفعله عادةً؟</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="q8" value="0"> أستخدمها لأنها تبدو منطقية.</label>
+          <label class="option"><input type="radio" name="q8" value="1"> أتحقق منها بالرجوع إلى المصدر أو مرجع موثوق.</label>
+          <label class="option"><input type="radio" name="q8" value="0"> أطلب من الأداة أن تؤكد أنها صحيحة.</label>
+          <label class="option"><input type="radio" name="q8" value="0"> أحذفها وأبدأ من جديد دون مراجعة.</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-title">9. أمامك وقت محدود لإعداد منتج تعليمي. ما الاستراتيجية الأقرب لما تراه مناسبًا؟</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="q9" value="0"> طلب منتج كامل دفعة واحدة ثم استخدامه كما هو.</label>
+          <label class="option"><input type="radio" name="q9" value="1"> تحديد المطلوب الأساسي، إنتاج نسخة أولية، ثم مراجعتها وتحسينها.</label>
+          <label class="option"><input type="radio" name="q9" value="0"> تجربة أكبر عدد من الأدوات.</label>
+          <label class="option"><input type="radio" name="q9" value="0"> التركيز على الشكل قبل المحتوى.</label>
+        </div>
+      </div>
+    </section>
+
+    <section class="card quiz-section">
+      <div class="section-title"><span>4</span><h2>احتياجاتك من الورشة</h2></div>
+
+      <div class="question">
+        <div class="q-title">10. ما المخرج الذي ترغب أكثر في تعلم إنتاجه؟</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="q10" value="1"> مادة أو ملف تعليمي منظم.</label>
+          <label class="option"><input type="radio" name="q10" value="1"> نشاط أو تقويم قابل للاستخدام.</label>
+          <label class="option"><input type="radio" name="q10" value="1"> صورة أو مادة بصرية تعليمية.</label>
+          <label class="option"><input type="radio" name="q10" value="1"> سير عمل متكامل من الفكرة إلى المنتج.</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-title">11. ما أكبر تحدٍ تتوقع أن تواجهه؟</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="q11" value="1"> صياغة الطلب بوضوح.</label>
+          <label class="option"><input type="radio" name="q11" value="1"> التحقق من صحة النتائج وجودتها.</label>
+          <label class="option"><input type="radio" name="q11" value="1"> تحويل النتائج إلى ملف أو منتج فعلي.</label>
+          <label class="option"><input type="radio" name="q11" value="1"> معرفة أين يفيد الذكاء الاصطناعي وأين لا يفيد.</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-title">12. اذكر مهمة تعليمية واحدة تتمنى إنجازها بسرعة أو بجودة أفضل.</div>
+        <textarea id="q12" placeholder="مثال: إعداد نشاط، تنظيم محاضرة، تطوير أسئلة، إنشاء ملف..."></textarea>
+      </div>
+
+    </section>
+    <div class="wizard-nav" id="wizardNav">
+      <button type="button" class="secondary" id="prevBtn">السابق</button>
+      <span class="step-counter" id="stepCounter">السؤال 1 من 12</span>
+      <button type="button" class="primary" id="nextBtn">التالي</button>
+      <button type="button" class="primary" id="submitBtn" hidden>إرسال الإجابات</button>
+    </div>
+    <div class="alert" id="alert">يرجى الإجابة عن السؤال قبل المتابعة.</div>
+  </form>
+
+  <section class="card success-message" id="successMessage" role="status" aria-live="polite">
+    <h2>تم إرسال إجاباتك بنجاح</h2>
+    <p>شكرًا لك على مشاركتك وإتمام الاختبار القبلي. تم حفظ إجاباتك باستخدام الرمز <strong id="submittedCode"></strong>.</p>
+    <p>نتمنى لك ورشة ممتعة ومثمرة، تحقق لك الفائدة المرجوة وتدعمك في توظيف الذكاء الاصطناعي بفاعلية في عملك التعليمي.</p>
+  </section>
+
+</div>
+
+<script>
+// ضع هنا رابط تطبيق الويب بعد نشر ملف Google Apps Script المرفق بالمشروع.
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzspq_Cg9Ok89aeaUP7qDSkjbQrlStysKuYoAdwyeT7SjJ8-jkCMIn1h_U5gMY4Hs3N/exec';
+const PARTICIPANT_CODE_STORAGE_KEY = 'covary_pretest_participant_code';
+const form = document.getElementById('quiz');
+const requiredNames = ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11'];
+let participantCode = '';
+requestParticipantCode();
+
+function requestParticipantCode(){
+  const codeBox = document.getElementById('participantCode');
+  const savedCode = localStorage.getItem(PARTICIPANT_CODE_STORAGE_KEY);
+  if(/^T\d+$/.test(savedCode || '')){
+    participantCode = savedCode;
+    codeBox.textContent = participantCode;
+    return;
+  }
+  if(!GOOGLE_SCRIPT_URL.startsWith('https://script.google.com/macros/s/')){
+    codeBox.textContent = 'يلزم إعداد رابط Google Sheets';
+    return;
+  }
+  const script = document.createElement('script');
+  script.src = GOOGLE_SCRIPT_URL + '?action=nextCode&callback=receiveParticipantCode&_=' + Date.now();
+  script.onerror = () => { codeBox.textContent = 'تعذر توليد الرمز'; };
+  document.head.appendChild(script);
+}
+
+function receiveParticipantCode(response){
+  participantCode = response && response.ok ? response.code : '';
+  if(participantCode) localStorage.setItem(PARTICIPANT_CODE_STORAGE_KEY, participantCode);
+  document.getElementById('participantCode').textContent = participantCode || 'تعذر توليد الرمز';
+}
+
+function selectedAnswer(name){
+  const input = form.querySelector(`input[name="${name}"]:checked`);
+  return {
+    score: Number(input.value),
+    answer: input.closest('label').textContent.replace(/\s+/g,' ').trim()
+  };
+}
+
+async function sendToGoogleSheets(payload){
+  if(!GOOGLE_SCRIPT_URL.startsWith('https://script.google.com/macros/s/')){
+    throw new Error('لم يتم إعداد رابط Google Apps Script بعد. راجع ملف GOOGLE_SHEETS_SETUP.md.');
+  }
+  if(!participantCode) throw new Error('لم يتم توليد رمز المشارك بعد. انتظر قليلًا ثم حاول مجددًا.');
+  await fetch(GOOGLE_SCRIPT_URL, {
+    method:'POST', mode:'no-cors',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify(payload)
+  });
+}
+
+const questions = Array.from(form.querySelectorAll('.question'));
+const sections = Array.from(form.querySelectorAll('.quiz-section'));
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const submitBtn = document.getElementById('submitBtn');
+const alertBox = document.getElementById('alert');
+let currentStep = 0;
+
+function showStep(index, shouldScroll = true){
+  currentStep = Math.max(0, Math.min(index, questions.length - 1));
+  questions.forEach((question, i) => question.classList.toggle('active-question', i === currentStep));
+  sections.forEach(section => {
+    section.classList.toggle('active-section', section.contains(questions[currentStep]));
+  });
+
+  const isLast = currentStep === questions.length - 1;
+  prevBtn.disabled = currentStep === 0;
+  nextBtn.hidden = isLast;
+  submitBtn.hidden = !isLast;
+  document.getElementById('stepCounter').textContent = `السؤال ${currentStep + 1} من ${questions.length}`;
+
+  const pct = Math.round((currentStep + 1) / questions.length * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressText').textContent = pct + '%';
+  alertBox.style.display = 'none';
+  alertBox.textContent = 'يرجى الإجابة عن السؤال قبل المتابعة.';
+
+  if(shouldScroll){
+    questions[currentStep].closest('.quiz-section').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  questions[currentStep].querySelector('input:checked, input, textarea')?.focus({preventScroll:true});
+}
+
+function currentQuestionAnswered(){
+  if(currentStep === questions.length - 1){
+    return Boolean(document.getElementById('q12').value.trim());
+  }
+  return Boolean(questions[currentStep].querySelector('input[type="radio"]:checked'));
+}
+
+function requireCurrentAnswer(){
+  if(currentQuestionAnswered()) return true;
+  alertBox.textContent = 'يرجى الإجابة عن هذا السؤال قبل المتابعة.';
+  alertBox.style.display = 'block';
+  questions[currentStep].querySelector('input, textarea')?.focus();
+  return false;
+}
+
+prevBtn.addEventListener('click', () => showStep(currentStep - 1));
+nextBtn.addEventListener('click', () => {
+  if(requireCurrentAnswer()) showStep(currentStep + 1);
+});
+
+form.addEventListener('change', () => { alertBox.style.display = 'none'; });
+document.getElementById('q12').addEventListener('input', () => { alertBox.style.display = 'none'; });
+
+function labelLevel(v,max){
+  const p=v/max;
+  if(p<.34) return 'مبتدئ';
+  if(p<.67) return 'نامٍ';
+  return 'جيد';
+}
+
+function overallResult(total){
+  if(total < 7) return 'مبتدئ';
+  if(total < 13) return 'نامٍ';
+  return 'جيد';
+}
+
+submitBtn.addEventListener('click', async ()=>{
+  if(!requireCurrentAnswer()) return;
+  const missingIndex = requiredNames.findIndex(n => !form.querySelector(`input[name="${n}"]:checked`));
+  if(missingIndex !== -1){
+    showStep(missingIndex);
+    alertBox.textContent = 'يرجى الإجابة عن هذا السؤال قبل الإرسال.';
+    alertBox.style.display = 'block';
+    return;
+  }
+
+  const v = {};
+  requiredNames.forEach(n => v[n]=Number(form.querySelector(`input[name="${n}"]:checked`).value));
+
+  const exp = v.q1+v.q2+v.q3;
+  const practice = v.q4+v.q5+v.q6;
+  const readiness = v.q7+v.q8+v.q9;
+
+  const total = exp+practice+readiness;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'جارٍ إرسال الإجابات...';
+  const answers = {};
+  requiredNames.forEach(name => {
+    const selected = selectedAnswer(name);
+    answers[name] = selected.answer;
+    answers[name + '_score'] = selected.score;
+  });
+  const payload = {
+    participant_code: participantCode,
+    submitted_at: new Date().toISOString(),
+    name: document.getElementById('name').value.trim(),
+    specialty: document.getElementById('specialty').value.trim(),
+    ...answers,
+    q12: document.getElementById('q12').value.trim(),
+    experience_score: exp,
+    experience_level: labelLevel(exp,10),
+    practice_score: practice,
+    practice_level: labelLevel(practice,10),
+    readiness_score: readiness,
+    readiness_level: labelLevel(readiness,3),
+    total_score: total,
+    overall_result: overallResult(total)
+  };
+
+  try{
+    await sendToGoogleSheets(payload);
+    submitBtn.textContent = 'تم إرسال الإجابات ✓';
+  }catch(error){
+    alertBox.textContent = error.message || 'تعذر إرسال الإجابات. تحقق من الاتصال ثم حاول مجددًا.';
+    alertBox.style.display = 'block';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'إعادة محاولة الإرسال';
+    return;
+  }
+
+  form.style.display = 'none';
+  document.getElementById('submittedCode').textContent = participantCode;
+  const successMessage = document.getElementById('successMessage');
+  successMessage.style.display = 'block';
+  successMessage.scrollIntoView({behavior:'smooth',block:'center'});
+});
+
+showStep(0, false);
+</script>
+</body>
+</html>
+
