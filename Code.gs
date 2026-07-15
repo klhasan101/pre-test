@@ -1,5 +1,5 @@
 /**
- * Google Apps Script endpoint for Pre-test.html.
+ * Google Apps Script endpoint for index.html.
  * اربط هذا السكربت بجدول Google Sheets المطلوب ثم انشره كتطبيق ويب.
  */
 const SHEET_NAME = 'Responses';

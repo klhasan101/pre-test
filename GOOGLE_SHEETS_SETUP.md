@@ -8,7 +8,7 @@
    - التنفيذ باسم: **أنا**.
    - من لديه حق الوصول: **أي شخص**.
 6. وافق على الأذونات، ثم انسخ رابط تطبيق الويب المنتهي بـ `/exec`.
-7. افتح `Pre-test.html` وابحث عن `GOOGLE_SCRIPT_URL`، ثم استبدل النص:
+7. افتح `index.html` وابحث عن `GOOGLE_SCRIPT_URL`، ثم استبدل النص:
 
    `PASTE_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE`
 
